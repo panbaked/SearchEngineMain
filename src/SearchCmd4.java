@@ -21,7 +21,7 @@ class Searcher4 {
 	
     public static boolean exists (SimpleMap hashMap, String word) {
     	int hash = word.hashCode();
-    	if(hashMap.get(hash) != null)
+    	if(hashMap.get(word) != null)
     		return true;
     	
     	return false;    		
@@ -35,25 +35,25 @@ class Searcher4 {
     	
     	while(line != null)
     	{
-    		if(isPage(line))
-    			lastURL = getURL(line);
-    		else
-    		{
-    			if(exists(hashMap, line))
-    			{
-					 URLList duplicateURLEntry = find(hashMap.get(line.hashCode()), lastURL); //check for this url already exisiting with this name
-	    			 if(duplicateURLEntry == null) //if it is not a duplicate we update the hashMap
-	    			 {
-	    				 hashMap.put(line, line.hashCode(), new URLList(lastURL, null));
-	    			 }
-    			}
-    			else
-    			{
-    				hashMap.put(line, line.hashCode(), new URLList(lastURL, null));
-    			}
-    		}
-    		line = infile.readLine();
-    			
+            if(isPage(line))
+                    lastURL = getURL(line);
+            else
+            {
+                if(exists(hashMap, line))
+                {
+                    URLList duplicateURLEntry = find(hashMap.get(line), lastURL); //check for this url already exisiting with this name
+                    if(duplicateURLEntry == null) //if it is not a duplicate we update the hashMap
+                    {
+                            hashMap.put(line, line.hashCode(), new URLList(lastURL, null));
+                    }
+                }
+                else
+                {
+                    hashMap.put(line, line.hashCode(), new URLList(lastURL, null));
+                }
+            }
+            line = infile.readLine();
+
     	}
     	infile.close();
     	return hashMap;
@@ -133,7 +133,7 @@ public class SearchCmd4 {
             name = inuser.readLine(); // Read a line from the terminal
             if (name == null || name.length() == 0) {
                 quit = true;
-            } else if ((currentEntry = hashMap.get(name.hashCode())) != null) {
+            } else if ((currentEntry = hashMap.get(name)) != null) {
                 System.out.println ("The word \""+name+"\" has been found.");
                 System.out.println("URLs linked to "+ name);
                 Searcher4.printURLs(currentEntry);

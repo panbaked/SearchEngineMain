@@ -14,53 +14,36 @@ class Bucket {
 	}
 }
 
-public class SimpleMap{
-	int size;
-	int defaultCapacity = 64;
+public class SimpleMap
+{
+	int defaultCapacity = 2056;
 	
 	Bucket[] mappings = new Bucket[defaultCapacity];
-	
-	public URLList get(int key)
+
+	public URLList get(String s)
 	{
-		for(int i = 0; i < size; i++)
-		{
-			if(mappings[i] != null)
-			{
-				if(mappings[i].hashKey == key)
-					return mappings[i].value;
-			}
-		}
-		return null;
+            int i = getHash(s);
+            return mappings[i] != null ? mappings[i].value : null;
 	}
 	
 	public void put(String s, int key, URLList value)
 	{
-		boolean insert = true;
-		for(int i = 0; i < size; i++)
-		{
-			if(mappings[i] == null)
-				continue;
-			if(mappings[i].hashKey == key)
-			{
-				value.next = mappings[i].value; //insert at the beginning
-				mappings[i].value = value;
-				insert = false;
-			}
-		}
-		if(insert)
-		{
-			size++;
-			expand();
-			mappings[size] = new Bucket(s, key, value);
-		}
-		
+            boolean insert = true;
+           
+            int i = getHash(s);
+            if(mappings[i] == null)
+            {
+                mappings[i] = new Bucket(s, key, value);
+            }
+            else
+            {
+                value.next = mappings[i].value;
+                mappings[i].value = value;
+            }	
 	}
-	
-	public void expand()
-	{
-		if(size == mappings.length)
-		{
-			mappings = Arrays.copyOf(mappings, mappings.length * 2);
-		}
-	}
+
+        public int getHash(String s)
+        {
+            return Math.abs(s.hashCode() % defaultCapacity);
+        }
 }
