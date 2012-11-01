@@ -1,4 +1,8 @@
 
 /bin
 /.settings
+<<<<<<< HEAD
 /build
+=======
+/build/
+>>>>>>> Had to change it to jdk 1.6
