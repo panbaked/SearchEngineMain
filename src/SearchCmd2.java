@@ -19,9 +19,17 @@ class Searcher2 {
 
     public static int exists (HTMLList2 l, String word) {
     	int foundWords = 0;
-        while (l != null) {
-            if (l.str.equals (word)) {
-            	System.out.println ("The word \""+word+"\" has been found.");
+        String lastURL = "";
+        while (l != null) 
+        {
+            if(l.str.charAt(0) == '*')
+            {
+                lastURL = l.str.substring(6); //remove *PAGE:
+            } 
+            
+            if (l.str.equals (word)) 
+            {
+            	System.out.println ("The word has been found in: " + lastURL);
             	foundWords++;
             }
             l = l.next;
