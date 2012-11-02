@@ -1,3 +1,5 @@
+package SearchEnginePackage;
+
 import java.io.IOException;
 
 import org.junit.Test;

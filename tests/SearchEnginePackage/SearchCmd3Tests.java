@@ -1,3 +1,6 @@
+package SearchEnginePackage;
+
+import SearchEnginePackage.Searcher3;
 import java.io.IOException;
 
 import junit.framework.Assert;
