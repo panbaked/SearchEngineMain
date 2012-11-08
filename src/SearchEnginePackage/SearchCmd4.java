@@ -21,16 +21,16 @@ class HTMLHash {
 }
 class Searcher4 {
 	
-    public static boolean exists (SimpleMap hashMap, String word) {
+    public static boolean exists (Hashtable hashMap, String word) {
     	int hash = word.hashCode();
     	if(hashMap.get(word) != null)
     		return true;
     	
     	return false;    		
     }
-    public static SimpleMap readHashMap(String filename) throws IOException {
+    public static Hashtable readHashMap(String filename) throws IOException {
     	String line, lastURL = "";
-    	SimpleMap hashMap = new SimpleMap();
+    	Hashtable hashMap = new Hashtable();
     	BufferedReader infile = new BufferedReader(new FileReader(filename));
     	
     	line = infile.readLine();
@@ -121,7 +121,7 @@ public class SearchCmd4 {
         }
        
         // Read the file and create the linked list
-        SimpleMap hashMap = Searcher4.readHashMap(args[0]);
+        Hashtable hashMap = Searcher4.readHashMap(args[0]);
 
         // Ask for a word to search
         BufferedReader inuser =
