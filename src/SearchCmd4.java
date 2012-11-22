@@ -5,6 +5,7 @@
 */
 
 import java.io.*;
+import java.util.Scanner;
 
 class HTMLHash {
 	String str;
@@ -18,15 +19,27 @@ class HTMLHash {
 	}
 }
 class Searcher4 {
+    
+    public static long time;
 	
     public static boolean exists (SimpleMap hashMap, String word) {
+        
+        long startTime = System.currentTimeMillis();
     	int hash = word.hashCode();
-    	if(hashMap.get(word) != null)
-    		return true;
-    	
+    	if(hashMap.get(word) != null) {
+            
+            long endTime = System.currentTimeMillis();
+            time = endTime - startTime;
+            return true;
+        }
+        
+         long endTime = System.currentTimeMillis();
+         time = endTime - startTime;    	
     	return false;    		
     }
     public static SimpleMap readHashMap(String filename) throws IOException {
+        
+        long startTime = System.currentTimeMillis();
     	String line, lastURL = "";
     	SimpleMap hashMap = new SimpleMap();
     	BufferedReader infile = new BufferedReader(new FileReader(filename));
@@ -35,8 +48,9 @@ class Searcher4 {
     	
     	while(line != null)
     	{
-            if(isPage(line))
-                    lastURL = getURL(line);
+            if(isPage(line)) {
+                lastURL = getURL(line);
+            }
             else
             {
                 if(exists(hashMap, line))
@@ -56,6 +70,8 @@ class Searcher4 {
 
     	}
     	infile.close();
+        long endTime = System.currentTimeMillis();
+        time = endTime - startTime;
     	return hashMap;
     }
     public static HTMLHash[] expand(HTMLHash[] toExpand, int size)
@@ -67,19 +83,23 @@ class Searcher4 {
     
     public static boolean isPage(String line)
     {
-    	if(line.length() < 6)
-    		return false;
+    	if(line.length() < 6) {
+            return false;
+        }
     	
-    	if(line.substring(0, 6).equals("*PAGE:"))
-    		return true;
-    	else
-    		return false;
+    	if(line.substring(0, 6).equals("*PAGE:")) {
+            return true;
+        }
+    	else {
+            return false;
+        }
     }
     
     public static String getURL(String pageLine)
     {
-    	if(pageLine.length() < 6)
-    		return "";
+    	if(pageLine.length() < 6) {
+            return "";
+        }
     	return pageLine.substring(6);
     }
     
@@ -102,7 +122,7 @@ class Searcher4 {
 			urlList = urlList.next;
 			i++;
 		}
-		System.out.println("There were "+ i + " URLs attached.");		
+		System.out.println("There were "+ i + " URLs attached.Search time:" + Searcher4.time +"\"milliseconds");		
 		
 	}
 }
@@ -111,15 +131,45 @@ public class SearchCmd4 {
 
     public static void main (String[] args) throws IOException {
         String name;
+      
+      //prompt the user which file to use
+      
+      Scanner readIn = new Scanner(System.in);
+      String file = null;
 
-        // Check that a filename has been given as argument
-        if (args.length != 1) {
-            System.out.println("Usage: java SearchCmd <datafile>");
-            System.exit(1);
+      while (file == null)
+      {
+         try
+         {
+            System.out.println("Please type which file you use for searching e.g. : small, medium, large");
+            file = readIn.next().toUpperCase();
+            if (!file.equals(SearchCmd2.searchFile.SMALL.toString()) & !file.equals(SearchCmd2.searchFile.MEDIUM.toString()) & !file.equals(SearchCmd2.searchFile.LARGE.toString()))
+            {
+               throw new Exception("Input must be: " + SearchCmd2.searchFile.SMALL.toString() + " / " + SearchCmd2.searchFile.MEDIUM.toString() + " / " + SearchCmd2.searchFile.LARGE.toString());
+            }
+         }
+         catch (Exception ex)
+         {
+            file = null;
+            System.out.println("Invalid input: " + ex.getMessage());
+         }
+      }
+
+      SearchCmd2.searchFile fileFormat = null;
+      if (file.equals(SearchCmd2.searchFile.SMALL.toString())) {
+            fileFormat = SearchCmd2.searchFile.SMALL;
         }
+      if (file.equals(SearchCmd2.searchFile.MEDIUM.toString())) {
+            fileFormat = SearchCmd2.searchFile.MEDIUM;
+        }
+      if (file.equals(SearchCmd2.searchFile.LARGE.toString())) {
+            fileFormat = SearchCmd2.searchFile.LARGE;
+        }
+
        
         // Read the file and create the linked list
-        SimpleMap hashMap = Searcher4.readHashMap(args[0]);
+        SimpleMap hashMap = Searcher4.readHashMap(fileFormat.file());
+        System.out.println("Datafile loaded in " + Searcher4.time / 1000F + " seconds.");
 
         // Ask for a word to search
         BufferedReader inuser =
@@ -138,7 +188,7 @@ public class SearchCmd4 {
                 System.out.println("URLs linked to "+ name);
                 Searcher4.printURLs(currentEntry);
             } else {
-                System.out.println ("The word \""+name+"\" has NOT been found.");
+                System.out.println ("The word \""+name+"\" has NOT been found.Search time:" + Searcher4.time +"\"milliseconds");
             }
         }
     }
