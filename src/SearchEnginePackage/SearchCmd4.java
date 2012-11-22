@@ -1,3 +1,5 @@
+package SearchEnginePackage;
+
 /* SearchCmd.java
    Written by Rune Hansen
    Updated by Alexandre Buisse <abui@itu.dk>
@@ -22,7 +24,7 @@ class Searcher4 {
     
     public static long time;
 	
-    public static boolean exists (SimpleMap hashMap, String word) {
+    public static boolean exists (Hashtable hashMap, String word) {
         
         long startTime = System.currentTimeMillis();
     	int hash = word.hashCode();
@@ -37,11 +39,11 @@ class Searcher4 {
          time = endTime - startTime;    	
     	return false;    		
     }
-    public static SimpleMap readHashMap(String filename) throws IOException {
+    public static Hashtable readHashMap(String filename) throws IOException {
         
         long startTime = System.currentTimeMillis();
     	String line, lastURL = "";
-    	SimpleMap hashMap = new SimpleMap();
+    	Hashtable hashMap = new Hashtable();
     	BufferedReader infile = new BufferedReader(new FileReader(filename));
     	
     	line = infile.readLine();
@@ -168,7 +170,7 @@ public class SearchCmd4 {
 
        
         // Read the file and create the linked list
-        SimpleMap hashMap = Searcher4.readHashMap(fileFormat.file());
+        Hashtable hashMap = Searcher4.readHashMap(fileFormat.file());
         System.out.println("Datafile loaded in " + Searcher4.time / 1000F + " seconds.");
 
         // Ask for a word to search

@@ -1,3 +1,5 @@
+package SearchEnginePackage;
+
 /* SearchCmd.java
    Written by Rune Hansen
    Updated by Alexandre Buisse <abui@itu.dk>
