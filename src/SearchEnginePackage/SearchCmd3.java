@@ -7,6 +7,7 @@ package SearchEnginePackage;
 */
 
 import java.io.*;
+import java.util.Scanner;
 
 class HTMLList {
     String str;
@@ -30,18 +31,30 @@ class URLList {
 	}
 }
 class Searcher3 {
+    
+    public static long time;
 	
     public static boolean exists (HTMLList l, String word) {
+        
+        long startTime = System.currentTimeMillis();
         while (l != null) {
             if (l.str.equals (word)) {
+                
+                long endTime = System.currentTimeMillis();
+                time = endTime - startTime;
                 return true;
             }
             l = l.next;
         }
+        
+        long endTime = System.currentTimeMillis();
+        time = endTime - startTime;
         return false;
     }
 
     public static HTMLList readHtmlList (String filename) throws IOException {
+        
+        long startTime = System.currentTimeMillis();
         String name;
         HTMLList start, current, tmp;
         String lastURL = "";
@@ -53,13 +66,15 @@ class Searcher3 {
         current = start;
         name = infile.readLine(); // Read the next line
         
-        if(isPage(name))
-        	lastURL = getURL(name);
+        if(isPage(name)) {
+            lastURL = getURL(name);
+        }
         
         while(name != null)
         {
-        	 if(isPage(name))
-             	lastURL = getURL(name);
+        	 if(isPage(name)) {
+                lastURL = getURL(name);
+            }
         	 else
         	 {
         		 if(exists(start, name)) //Have we found this name before, if so we add the last url to this name
@@ -89,25 +104,31 @@ class Searcher3 {
         }
        
         infile.close(); // Close the file
-
+        
+        long endTime = System.currentTimeMillis();
+        time = endTime - startTime;
         return start;
     }
     
     public static boolean isPage(String line)
     {
-    	if(line.length() < 6)
-    		return false;
+    	if(line.length() < 6) {
+            return false;
+        }
     	
-    	if(line.substring(0, 6).equals("*PAGE:"))
-    		return true;
-    	else
-    		return false;
+    	if(line.substring(0, 6).equals("*PAGE:")) {
+            return true;
+        }
+    	else {
+            return false;
+        }
     }
     
     public static String getURL(String pageLine)
     {
-    	if(pageLine.length() < 6)
-    		return "";
+    	if(pageLine.length() < 6) {
+            return "";
+        }
     	return pageLine.substring(6);
     }
     
@@ -144,24 +165,74 @@ class Searcher3 {
 			urlList = urlList.next;
 			i++;
 		}
-		System.out.println("There were "+ i + " URLs attached.");		
+		System.out.println("There were "+ i + " URLs attached.Search time:" + Searcher3.time + " milliseconds");		
 		
 	}
 }
 
 public class SearchCmd3 {
 
-    public static void main (String[] args) throws IOException {
-        String name;
+    public static enum searchFile
+   {
 
-        // Check that a filename has been given as argument
-        if (args.length != 1) {
-            System.out.println("Usage: java SearchCmd <datafile>");
-            System.exit(1);
+      SMALL("small.txt"),
+      MEDIUM("medium.txt"),
+      LARGE("large.txt");
+      private final String path;
+
+      searchFile(String file)
+      {
+         this.path = file;
+      }
+
+      public String file()
+      {
+         return this.path;
+      }
+   }
+
+
+    public static void main (String[] args) throws IOException {
+        
+      String name;
+      
+      //prompt the user which file to use
+      
+      Scanner readIn = new Scanner(System.in);
+      String file = null;
+
+      while (file == null)
+      {
+         try
+         {
+            System.out.println("Please type which file you use for searching e.g. : small, medium, large");
+            file = readIn.next().toUpperCase();
+            if (!file.equals(SearchCmd2.searchFile.SMALL.toString()) & !file.equals(SearchCmd2.searchFile.MEDIUM.toString()) & !file.equals(SearchCmd2.searchFile.LARGE.toString()))
+            {
+               throw new Exception("Input must be: " + SearchCmd2.searchFile.SMALL.toString() + " / " + SearchCmd2.searchFile.MEDIUM.toString() + " / " + SearchCmd2.searchFile.LARGE.toString());
+            }
+         }
+         catch (Exception ex)
+         {
+            file = null;
+            System.out.println("Invalid input: " + ex.getMessage());
+         }
+      }
+
+      SearchCmd2.searchFile fileFormat = null;
+      if (file.equals(SearchCmd2.searchFile.SMALL.toString())) {
+            fileFormat = SearchCmd2.searchFile.SMALL;
         }
-       
+      if (file.equals(SearchCmd2.searchFile.MEDIUM.toString())) {
+            fileFormat = SearchCmd2.searchFile.MEDIUM;
+        }
+      if (file.equals(SearchCmd2.searchFile.LARGE.toString())) {
+            fileFormat = SearchCmd2.searchFile.LARGE;
+        }
+
         // Read the file and create the linked list
-        HTMLList l = Searcher3.readHtmlList (args[0]);
+        HTMLList l = Searcher3.readHtmlList (fileFormat.file());
+         System.out.println("Datafile loaded in " + Searcher3.time / 1000F + " seconds.");
 
         // Ask for a word to search
         BufferedReader inuser =
@@ -179,7 +250,7 @@ public class SearchCmd3 {
                 System.out.println ("The word \""+name+"\" has been found.");
                 Searcher3.printURLs(currentEntry);
             } else {
-                System.out.println ("The word \""+name+"\" has NOT been found.");
+                System.out.println ("The word \""+name+"\" has NOT been found.Search time:" + Searcher3.time + " milliseconds");
             }
         }
     }
