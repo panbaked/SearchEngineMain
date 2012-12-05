@@ -9,17 +9,6 @@ package SearchEnginePackage;
 import java.io.*;
 import java.util.Scanner;
 
-class HTMLHash {
-	String str;
-	int hash;
-	URLList urlList;
-	
-	HTMLHash(String s)
-	{
-		str = s;
-		hash = s.hashCode();
-	}
-}
 class Searcher4 {
     
     public static long time;
@@ -39,6 +28,7 @@ class Searcher4 {
          time = endTime - startTime;    	
     	return false;    		
     }
+    
     public static Hashtable readHashMap(String filename) throws IOException {
         
         long startTime = System.currentTimeMillis();
@@ -60,12 +50,12 @@ class Searcher4 {
                     URLList duplicateURLEntry = find(hashMap.get(line), lastURL); //check for this url already exisiting with this name
                     if(duplicateURLEntry == null) //if it is not a duplicate we update the hashMap
                     {
-                            hashMap.put(line, line.hashCode(), new URLList(lastURL, null));
+                            hashMap.put(line, new URLList(lastURL, null));
                     }
                 }
                 else
                 {
-                    hashMap.put(line, line.hashCode(), new URLList(lastURL, null));
+                    hashMap.put(line, new URLList(lastURL, null));
                 }
             }
             line = infile.readLine();
@@ -76,13 +66,7 @@ class Searcher4 {
         time = endTime - startTime;
     	return hashMap;
     }
-    public static HTMLHash[] expand(HTMLHash[] toExpand, int size)
-    {
-    	HTMLHash[] tmp = new HTMLHash[size];
-    	System.arraycopy(toExpand, 0, tmp, 0, toExpand.length);
-    	return tmp;
-    }
-    
+  
     public static boolean isPage(String line)
     {
     	if(line.length() < 6) {
@@ -108,7 +92,7 @@ class Searcher4 {
     public static URLList find(URLList l, String url)
     {
 	   	 while (l != null) {
-	         if (l.url.equals (url)) {
+	         if (l.url.equalsIgnoreCase (url)) {
 	             return l;
 	         }
 	         l = l.next;
