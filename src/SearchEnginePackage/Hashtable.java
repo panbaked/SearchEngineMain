@@ -1,3 +1,5 @@
+package SearchEnginePackage;
+
 import java.util.Arrays;
 
 
@@ -14,7 +16,7 @@ class Bucket {
 	}
 }
 
-public class SimpleMap
+public class Hashtable
 {
 	int defaultCapacity = 2056;
 	
