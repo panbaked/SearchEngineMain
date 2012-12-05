@@ -76,7 +76,6 @@ public class SearchCmd2 {
     
      public static enum searchFile
    {
-
       SMALL("small.txt"),
       MEDIUM("medium.txt"),
       LARGE("large.txt");
