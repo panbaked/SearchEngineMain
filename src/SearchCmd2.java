@@ -20,15 +20,12 @@ class Searcher2 {
     public static int exists (HTMLList2 l, String word) {
     	int foundWords = 0;
         String lastURL = "";
-        while (l != null) 
-        {
-            if(l.str.charAt(0) == '*')
-            {
+        while (l != null) {
+            if(l.str.charAt(0) == '*') {
                 lastURL = l.str.substring(6); //remove *PAGE:
             } 
             
-            if (l.str.equals (word)) 
-            {
+            if (l.str.equals (word)) {
             	System.out.println ("The word has been found in: " + lastURL);
             	foundWords++;
             }
@@ -75,8 +72,7 @@ public class SearchCmd2 {
         HTMLList2 l = Searcher2.readHtmlList (args[0]);
 
         // Ask for a word to search
-        BufferedReader inuser =
-            new BufferedReader (new InputStreamReader (System.in));
+        BufferedReader inuser = new BufferedReader (new InputStreamReader (System.in));
 
         System.out.println ("Hit return to exit.");
         boolean quit = false;
@@ -85,9 +81,7 @@ public class SearchCmd2 {
             name = inuser.readLine(); // Read a line from the terminal
             if (name == null || name.length() == 0) {
                 quit = true;
-            } 
-            else
-            {
+            } else {
             	int instancesFound = Searcher2.exists(l, name);
             	System.out.println("There were "+instancesFound+" instances found.");
             }
