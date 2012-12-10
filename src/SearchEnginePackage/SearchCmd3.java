@@ -244,6 +244,7 @@ public class SearchCmd3 {
         while (!quit) {
             System.out.print ("Search for: ");
             name = inuser.readLine(); // Read a line from the terminal
+            
             if (name == null || name.length() == 0) {
                 quit = true;
             } else if ((currentEntry = Searcher3.find (l, name)) != null) {
@@ -253,5 +254,6 @@ public class SearchCmd3 {
                 System.out.println ("The word \""+name+"\" has NOT been found.Search time:" + Searcher3.time + " milliseconds");
             }
         }
+        
     }
 }
