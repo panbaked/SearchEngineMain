@@ -83,7 +83,6 @@ class Searcher3 {
             }
             name = infile.readLine();
         }
-      
         infile.close(); // Close the file  
         long endTime = System.currentTimeMillis(); // Stop timer
         time = endTime - startTime; // Update variable
@@ -161,29 +160,23 @@ public class SearchCmd3 {
 
 
     public static void main (String[] args) throws IOException {
-
         String name;
-
-        //prompt the user which file to use
-
-        Scanner readIn = new Scanner(System.in);
+        
+        BufferedReader readIn =
+            new BufferedReader (new InputStreamReader (System.in)); //prompt the user which file to use
+        
         String file = null;
 
-        while (file == null)
-        {
-            try
-            {
-            System.out.println("Please type which file you use for searching e.g. : small, medium, large");
-            file = readIn.next().toUpperCase();
-            if (!file.equals(SearchCmd2.searchFile.SMALL.toString()) & !file.equals(SearchCmd2.searchFile.MEDIUM.toString()) & !file.equals(SearchCmd2.searchFile.LARGE.toString()))
-            {
-                throw new Exception("Input must be: " + SearchCmd2.searchFile.SMALL.toString() + " / " + SearchCmd2.searchFile.MEDIUM.toString() + " / " + SearchCmd2.searchFile.LARGE.toString());
-            }
-            }
-            catch (Exception ex)
-            {
-            file = null;
-            System.out.println("Invalid input: " + ex.getMessage());
+        while (file == null) {
+            try {
+                System.out.println("Please type which file you use for searching e.g. : small, medium, large");
+                file = readIn.readLine().toUpperCase();
+                if (!file.equals(SearchCmd2.searchFile.SMALL.toString()) & !file.equals(SearchCmd2.searchFile.MEDIUM.toString()) & !file.equals(SearchCmd2.searchFile.LARGE.toString())) {
+                    throw new Exception("Input must be: " + SearchCmd2.searchFile.SMALL.toString() + " / " + SearchCmd2.searchFile.MEDIUM.toString() + " / " + SearchCmd2.searchFile.LARGE.toString());
+                }
+            } catch (Exception ex) {
+                file = null;
+                System.out.println("Invalid input: " + ex.getMessage());
             }
         }
 

@@ -1,16 +1,15 @@
 package SearchEnginePackage;
 
-import java.io.BufferedReader; 
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Scanner; // It is only used for get the user input on which file to search
 
 class HTMLList2 {
     String str;
     HTMLList2 next;
 
-    HTMLList2 (String s, HTMLList2 n) {
+    HTMLList2(String s, HTMLList2 n) {
         str = s;
         next = n;
     }
@@ -19,7 +18,7 @@ class HTMLList2 {
 class Searcher2 {
     public static long time; // Variable for timer
     
-    public static int exists (HTMLList2 l, String word) { 
+    public static int exists(HTMLList2 l, String word) { 
         long startTime = System.currentTimeMillis(); // Start timer
        
         int foundWords = 0;
@@ -42,7 +41,7 @@ class Searcher2 {
         return foundWords; // Return words
     }
 
-    public static HTMLList2 readHtmlList (String filename) throws IOException {
+    public static HTMLList2 readHtmlList(String filename) throws IOException {
         long startTime = System.currentTimeMillis(); // Start timer
         String name;
         HTMLList2 start, current, tmp;
@@ -86,17 +85,19 @@ public class SearchCmd2 {
     }
 
 
-    public static void main (String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
         String name;
         
-        Scanner readIn = new Scanner(System.in); //prompt the user which file to use
+        BufferedReader readIn =
+            new BufferedReader (new InputStreamReader (System.in)); //prompt the user which file to use
+
         String file = null;
 
         while (file == null) {
             try {
                 System.out.println("Please type which file you use for searching e.g. : small, medium, large");
                 System.out.print("Type: ");
-                file = readIn.next().toUpperCase();
+                file = readIn.readLine().toUpperCase();
                 if (!file.equals(searchFile.SMALL.toString()) & !file.equals(searchFile.MEDIUM.toString()) & !file.equals(searchFile.LARGE.toString())) {
                     throw new Exception("Input must be: " + searchFile.SMALL.toString() + " / " + searchFile.MEDIUM.toString() + " / " + searchFile.LARGE.toString());
                 }
