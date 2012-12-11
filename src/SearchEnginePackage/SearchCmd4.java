@@ -1,180 +1,161 @@
 package SearchEnginePackage;
 
-/* SearchCmd.java
-   Written by Rune Hansen
-   Updated by Alexandre Buisse <abui@itu.dk>
-   Updated by Richard Peck 05/10/12
-*/
-
-import java.io.*;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 class Searcher4 {
-    
     public static long time;
 	
-    public static boolean exists (Hashtable hashMap, String word) {
-        
-        long startTime = System.currentTimeMillis();
+    public static boolean exists(Hashtable hashMap, String word) {    
+        long startTime = System.currentTimeMillis(); // Start timer
     	int hash = word.hashCode();
+        
     	if(hashMap.get(word) != null) {
-            
-            long endTime = System.currentTimeMillis();
-            time = endTime - startTime;
+            long endTime = System.currentTimeMillis(); // Stop timer 
+            time = endTime - startTime; // Update variable
             return true;
         }
         
-         long endTime = System.currentTimeMillis();
-         time = endTime - startTime;    	
+        long endTime = System.currentTimeMillis(); // Stop timer
+        time = endTime - startTime; // Update variable   	
     	return false;    		
     }
     
     public static Hashtable readHashMap(String filename) throws IOException {
-        
-        long startTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis(); // Start timer
     	String line, lastURL = "";
     	Hashtable hashMap = new Hashtable();
-    	BufferedReader infile = new BufferedReader(new FileReader(filename));
+    	
+        BufferedReader infile = 
+                new BufferedReader(new FileReader(filename)); // Open the file given as argument
     	
     	line = infile.readLine();
     	
-    	while(line != null)
-    	{
+    	while(line != null) {
             if(isPage(line)) {
                 lastURL = getURL(line);
-            }
-            else
-            {
-                if(exists(hashMap, line))
-                {
+            } else {
+                if(exists(hashMap, line)) {
                     URLList duplicateURLEntry = find(hashMap.get(line), lastURL); //check for this url already exisiting with this name
-                    if(duplicateURLEntry == null) //if it is not a duplicate we update the hashMap
-                    {
-                            hashMap.put(line, new URLList(lastURL, null));
+                    if(duplicateURLEntry == null) { //if it is not a duplicate we update the hashMap
+                        hashMap.put(line, new URLList(lastURL, null));
                     }
-                }
-                else
-                {
+                } else {
                     hashMap.put(line, new URLList(lastURL, null));
                 }
             }
             line = infile.readLine();
-
     	}
+        
     	infile.close();
-        long endTime = System.currentTimeMillis();
-        time = endTime - startTime;
+        long endTime = System.currentTimeMillis(); // Stop timer
+        time = endTime - startTime; // Update variable
     	return hashMap;
     }
   
-    public static boolean isPage(String line)
-    {
+    public static boolean isPage(String line) {
     	if(line.length() < 6) {
             return false;
         }
     	
     	if(line.substring(0, 6).equals("*PAGE:")) {
             return true;
-        }
-    	else {
+        } else {
             return false;
         }
     }
     
-    public static String getURL(String pageLine)
-    {
+    public static String getURL(String pageLine) {
     	if(pageLine.length() < 6) {
             return "";
         }
     	return pageLine.substring(6);
     }
     
-    public static URLList find(URLList l, String url)
-    {
-	   	 while (l != null) {
-	         if (l.url.equalsIgnoreCase (url)) {
-	             return l;
-	         }
-	         l = l.next;
-	     }
-		 return null;
+    public static URLList find(URLList l, String url) {
+        while(l != null) {
+            if(l.url.equalsIgnoreCase (url)) {
+                return l;
+            }
+            l = l.next;
+        }
+        return null;
     }
-    public static void printURLs(URLList urlList)
-	{    	
+    
+    public static void printURLs(URLList urlList) {    	
     	int i = 0;
-		while(urlList != null)
-		{
-			System.out.println(urlList.url);
-			urlList = urlList.next;
-			i++;
-		}
-		System.out.println("There were "+ i + " URLs attached.Search time:" + Searcher4.time +"\"milliseconds");		
-		
-	}
+        while(urlList != null) {
+            System.out.println(urlList.url);
+            urlList = urlList.next;
+            i++;
+        }
+        System.out.println("There were "+ i + " URLs attached.Search time:" + Searcher4.time +"\"milliseconds");	
+    }
 }
 
 public class SearchCmd4 {
 
-    public static void main (String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
         String name;
       
-      //prompt the user which file to use
+        BufferedReader readIn =
+            new BufferedReader (new InputStreamReader (System.in)); // prompt the user which file to use
       
-      Scanner readIn = new Scanner(System.in);
-      String file = null;
+        String file = null;
 
-      while (file == null)
-      {
-         try
-         {
-            System.out.println("Please type which file you use for searching e.g. : small, medium, large");
-            file = readIn.next().toUpperCase();
-            if (!file.equals(SearchCmd2.searchFile.SMALL.toString()) & !file.equals(SearchCmd2.searchFile.MEDIUM.toString()) & !file.equals(SearchCmd2.searchFile.LARGE.toString()))
-            {
-               throw new Exception("Input must be: " + SearchCmd2.searchFile.SMALL.toString() + " / " + SearchCmd2.searchFile.MEDIUM.toString() + " / " + SearchCmd2.searchFile.LARGE.toString());
+        while(file == null) {
+            try {
+                System.out.println("Please type which file you use for searching e.g. : small, medium, large");
+                file = readIn.readLine().toUpperCase();
+                
+                if(!file.equals(SearchCmd2.searchFile.SMALL.toString()) & !file.equals(SearchCmd2.searchFile.MEDIUM.toString()) & !file.equals(SearchCmd2.searchFile.LARGE.toString())) {
+                    throw new Exception("Input must be: " + SearchCmd2.searchFile.SMALL.toString() + " / " + SearchCmd2.searchFile.MEDIUM.toString() + " / " + SearchCmd2.searchFile.LARGE.toString());
+                }
+            } catch(Exception ex) {
+                file = null;
+                System.out.println("Invalid input: " + ex.getMessage());
             }
-         }
-         catch (Exception ex)
-         {
-            file = null;
-            System.out.println("Invalid input: " + ex.getMessage());
-         }
-      }
-
-      SearchCmd2.searchFile fileFormat = null;
-      if (file.equals(SearchCmd2.searchFile.SMALL.toString())) {
-            fileFormat = SearchCmd2.searchFile.SMALL;
-        }
-      if (file.equals(SearchCmd2.searchFile.MEDIUM.toString())) {
-            fileFormat = SearchCmd2.searchFile.MEDIUM;
-        }
-      if (file.equals(SearchCmd2.searchFile.LARGE.toString())) {
-            fileFormat = SearchCmd2.searchFile.LARGE;
         }
 
-       
-        // Read the file and create the linked list
-        Hashtable hashMap = Searcher4.readHashMap(fileFormat.file());
+        SearchCmd2.searchFile fileFormat = null;
+        
+        if(file.equals(SearchCmd2.searchFile.SMALL.toString())) {
+                fileFormat = SearchCmd2.searchFile.SMALL;
+        }
+        
+        if(file.equals(SearchCmd2.searchFile.MEDIUM.toString())) {
+                fileFormat = SearchCmd2.searchFile.MEDIUM;
+        }
+        
+        if(file.equals(SearchCmd2.searchFile.LARGE.toString())) {
+                fileFormat = SearchCmd2.searchFile.LARGE;
+        }
+
+        Hashtable hashMap = Searcher4.readHashMap(fileFormat.file()); // Read the file and create the linked list
+        
         System.out.println("Datafile loaded in " + Searcher4.time / 1000F + " seconds.");
 
-        // Ask for a word to search
         BufferedReader inuser =
-            new BufferedReader (new InputStreamReader (System.in));
+            new BufferedReader(new InputStreamReader (System.in)); // Ask for a word to search
 
-        System.out.println ("Hit return to exit.");
+        System.out.println("Hit return to exit.");
         boolean quit = false;
         URLList currentEntry = null;
-        while (!quit) {
+        
+        while(!quit) {
             System.out.print ("Search for: ");
             name = inuser.readLine(); // Read a line from the terminal
-            if (name == null || name.length() == 0) {
+            
+            if(name == null || name.length() == 0) {
                 quit = true;
-            } else if ((currentEntry = hashMap.get(name)) != null) {
-                System.out.println ("The word \""+name+"\" has been found.");
+            } else if((currentEntry = hashMap.get(name)) != null) {
+                System.out.println ("The word \"" + name + "\" has been found.");
                 System.out.println("URLs linked to "+ name);
                 Searcher4.printURLs(currentEntry);
             } else {
-                System.out.println ("The word \""+name+"\" has NOT been found.Search time:" + Searcher4.time +"\"milliseconds");
+                System.out.println ("The word \"" + name + "\" has NOT been found.Search time:" + Searcher4.time +"\"milliseconds");
             }
         }
     }
