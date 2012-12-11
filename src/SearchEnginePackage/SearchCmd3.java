@@ -27,23 +27,18 @@ class URLList {
 class Searcher3 { 
     public static long time; // Variable for timer
     
-    public static boolean exists (HTMLList l, String word) {    
-        long startTime = System.currentTimeMillis(); // Start timer
-
+    public static boolean exists(HTMLList l, String word) {    
+        
         while (l != null) {
             if (l.str.equals (word)) {
-                long endTime = System.currentTimeMillis(); // Stop timer
-                time = endTime - startTime; // Update variable
                 return true;
             }
             l = l.next;
         }
-        long endTime = System.currentTimeMillis(); // Stop timer
-        time = endTime - startTime; // Update variable
         return false;
     }
 
-    public static HTMLList readHtmlList (String filename) throws IOException {    
+    public static HTMLList readHtmlList(String filename) throws IOException {    
         long startTime = System.currentTimeMillis(); // Start timer
         String name;
         HTMLList start, current, tmp;
@@ -109,18 +104,24 @@ class Searcher3 {
     }
     
     public static HTMLList find(HTMLList l, String name) { // Find a word
+        long startTime = System.currentTimeMillis(); // Start timer
+        
         while (l != null) {
-            if (l.str.equals (name)) {
+            if (l.str.equals(name)) {
+                long endTime = System.currentTimeMillis(); // Stop timer
+                time = endTime - startTime; // Update variable
                 return l;
             }
             l = l.next;
         }
+        long endTime = System.currentTimeMillis(); // Stop timer
+        time = endTime - startTime; // Update variable
         return null;
     }
     
     public static URLList find(URLList l, String url) { // Find a url
         while (l != null) {
-            if (l.url.equals (url)) {
+            if (l.url.equals(url)) {
                 return l;
             }
             l = l.next;
@@ -129,6 +130,8 @@ class Searcher3 {
     }
     
     public static void printURLs(HTMLList l) {
+        long startTime = System.currentTimeMillis(); // Start timer
+        
     	System.out.println("URLs linked to "+ l.str);
     	URLList urlList = l.urlList;
     	int i = 0;
@@ -138,11 +141,15 @@ class Searcher3 {
             urlList = urlList.next;
             i++;
         }
-        System.out.println("There were "+ i + " URLs attached.Search time:" + Searcher3.time + " milliseconds");
+        
+        long endTime = System.currentTimeMillis(); // Stop timer
+        time = endTime - startTime; // Update variable
+        System.out.println("There were "+ i + " URLs attached.\nSearch time: " + Searcher3.time + " milliseconds");
     }
 }
 
 public class SearchCmd3 {
+   
     public static enum searchFile {
         SMALL("small.txt"),
         MEDIUM("medium.txt"),
@@ -158,7 +165,6 @@ public class SearchCmd3 {
         }
     }
 
-
     public static void main (String[] args) throws IOException {
         String name;
         
@@ -170,6 +176,7 @@ public class SearchCmd3 {
         while (file == null) {
             try {
                 System.out.println("Please type which file you use for searching e.g. : small, medium, large");
+                System.out.print("Type: ");
                 file = readIn.readLine().toUpperCase();
                 if (!file.equals(SearchCmd2.searchFile.SMALL.toString()) & !file.equals(SearchCmd2.searchFile.MEDIUM.toString()) & !file.equals(SearchCmd2.searchFile.LARGE.toString())) {
                     throw new Exception("Input must be: " + SearchCmd2.searchFile.SMALL.toString() + " / " + SearchCmd2.searchFile.MEDIUM.toString() + " / " + SearchCmd2.searchFile.LARGE.toString());
@@ -199,20 +206,21 @@ public class SearchCmd3 {
         BufferedReader inuser =
             new BufferedReader (new InputStreamReader (System.in));
 
-        System.out.println ("Hit return to exit.");
+        System.out.println("Hit return to exit.");
         boolean quit = false;
         HTMLList currentEntry = null;
+        
         while (!quit) {
-            System.out.print ("Search for: ");
+            System.out.print("Search for: ");
             name = inuser.readLine(); // Read a line from the terminal
 
             if (name == null || name.length() == 0) {
                 quit = true;
-            } else if ((currentEntry = Searcher3.find (l, name)) != null) {
-                System.out.println ("The word \""+name+"\" has been found.");
+            } else if ((currentEntry = Searcher3.find(l, name)) != null) {
+                System.out.println("The word \"" + name + "\" has been found.");
                 Searcher3.printURLs(currentEntry);
             } else {
-                System.out.println ("The word \""+name+"\" has NOT been found.Search time:" + Searcher3.time + " milliseconds");
+                System.out.println("The word \"" + name + "\" has NOT been found.\nSearch time: " + Searcher3.time + " milliseconds");
             }
         }
 

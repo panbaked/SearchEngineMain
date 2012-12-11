@@ -9,17 +9,12 @@ class Searcher4 {
     public static long time;
 	
     public static boolean exists(Hashtable hashMap, String word) {    
-        long startTime = System.currentTimeMillis(); // Start timer
     	int hash = word.hashCode();
         
     	if(hashMap.get(word) != null) {
-            long endTime = System.currentTimeMillis(); // Stop timer 
-            time = endTime - startTime; // Update variable
             return true;
         }
         
-        long endTime = System.currentTimeMillis(); // Stop timer
-        time = endTime - startTime; // Update variable   	
     	return false;    		
     }
     
@@ -84,14 +79,19 @@ class Searcher4 {
         return null;
     }
     
-    public static void printURLs(URLList urlList) {    	
+    public static void printURLs(URLList urlList) {
+        long startTime = System.currentTimeMillis(); // Start timer        
     	int i = 0;
+        
         while(urlList != null) {
             System.out.println(urlList.url);
             urlList = urlList.next;
             i++;
         }
-        System.out.println("There were "+ i + " URLs attached.Search time:" + Searcher4.time +"\"milliseconds");	
+        
+        long endTime = System.currentTimeMillis(); // Stop timer 
+        time = endTime - startTime; // Update variable
+        System.out.println("There were "+ i + " URLs attached.\nSearch time: " + Searcher4.time + " milliseconds");	
     }
 }
 
@@ -108,6 +108,7 @@ public class SearchCmd4 {
         while(file == null) {
             try {
                 System.out.println("Please type which file you use for searching e.g. : small, medium, large");
+                System.out.print("Type: ");
                 file = readIn.readLine().toUpperCase();
                 
                 if(!file.equals(SearchCmd2.searchFile.SMALL.toString()) & !file.equals(SearchCmd2.searchFile.MEDIUM.toString()) & !file.equals(SearchCmd2.searchFile.LARGE.toString())) {
@@ -155,7 +156,7 @@ public class SearchCmd4 {
                 System.out.println("URLs linked to "+ name);
                 Searcher4.printURLs(currentEntry);
             } else {
-                System.out.println ("The word \"" + name + "\" has NOT been found.Search time:" + Searcher4.time +"\"milliseconds");
+                System.out.println ("The word \"" + name + "\" has NOT been found.\nSearch time: " + Searcher4.time + " milliseconds");
             }
         }
     }

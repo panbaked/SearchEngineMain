@@ -138,7 +138,7 @@ public class SearchCmd2 {
                 quit = true;
             } else {
             	int instancesFound = Searcher2.exists(l, name);
-            	System.out.println("There were " + instancesFound + " instances found.\nSearch time:" + Searcher2.time + " miliseconds");
+            	System.out.println("There were " + instancesFound + " instances found.\nSearch time: " + Searcher2.time + " miliseconds");
             }
         }
     }
