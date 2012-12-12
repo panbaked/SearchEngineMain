@@ -997,6 +997,7 @@ Schwartzbach
 Superflex
 Niels
 Jacobsen
+1000
 Flemming
 Damm
 Efterår
@@ -1997,6 +1998,7 @@ deltid
 Den
 henvender
 sig
+2000
 primært
 til
 erhvervsaktive
@@ -2997,6 +2999,7 @@ Eksempler
 på
 relevante
 projekter
+3000
 Praktikpladser
 Projektbørs
 Projekter
@@ -3998,3 +4001,4 @@ teaching
 experience
 to
 assess
+4004

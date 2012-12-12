@@ -29,7 +29,7 @@ class Searcher3 {
     public static boolean exists(HTMLList l, String word) {    
         
         while (l != null) {
-            if (l.str.equals (word)) {
+            if (l.str.equals(word)) {
                 return true;
             }
             l = l.next;

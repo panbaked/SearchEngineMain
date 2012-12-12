@@ -12,7 +12,6 @@ class Searcher4 {
     	if(hashMap.get(word) != null) {
             return true;
         }
-        
     	return false;    		
     }
     
@@ -150,12 +149,12 @@ public class SearchCmd4 {
             if(name == null || name.length() == 0) {
                 quit = true;
             } else if((currentEntry = hashMap.get(name)) != null) {
-                System.out.println ("The word \"" + name + "\" has been found.");               
+                System.out.println ("The word " + name + " has been found.");               
                 System.out.println("URLs linked to " + name);
                 Searcher4.printURLs(currentEntry);
-                System.out.println("Search time: "+ hashMap.searchTime/1000 + " miliseconds");
+                System.out.println("Search time: " + hashMap.searchTime/1000 + " miliseconds\n");
             } else {
-                System.out.println ("The word \"" + name + "\" has NOT been found.\nSearch time: " + Searcher4.time + " milliseconds");
+                System.out.println ("The word " + name + " has NOT been found.\nSearch time: " + Searcher4.time + " milliseconds\n");
             }
         }
     }
