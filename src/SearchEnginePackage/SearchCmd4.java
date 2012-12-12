@@ -151,7 +151,7 @@ public class SearchCmd4 {
                 quit = true;
             } else if((currentEntry = hashMap.get(name)) != null) {
                 System.out.println ("The word \"" + name + "\" has been found.");               
-                System.out.println("URLs linked to "+ name);
+                System.out.println("URLs linked to " + name);
                 Searcher4.printURLs(currentEntry);
                 System.out.println("Search time: "+ hashMap.searchTime/1000 + " miliseconds");
             } else {
