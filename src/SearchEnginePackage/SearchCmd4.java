@@ -9,8 +9,6 @@ class Searcher4 {
     public static long time;
 	
     public static boolean exists(Hashtable hashMap, String word) {    
-    	int hash = word.hashCode();
-        
     	if(hashMap.get(word) != null) {
             return true;
         }
@@ -37,6 +35,7 @@ class Searcher4 {
                     if(duplicateURLEntry == null) { //if it is not a duplicate we update the hashMap
                         hashMap.put(line, new URLList(lastURL, null));
                     }
+                        
                 } else {
                     hashMap.put(line, new URLList(lastURL, null));
                 }
@@ -70,6 +69,7 @@ class Searcher4 {
     }
     
     public static URLList find(URLList l, String url) {
+  
         while(l != null) {
             if(l.url.equalsIgnoreCase (url)) {
                 return l;
@@ -80,7 +80,7 @@ class Searcher4 {
     }
     
     public static void printURLs(URLList urlList) {
-        long startTime = System.currentTimeMillis(); // Start timer        
+ 
     	int i = 0;
         
         while(urlList != null) {
@@ -88,10 +88,8 @@ class Searcher4 {
             urlList = urlList.next;
             i++;
         }
-        
-        long endTime = System.currentTimeMillis(); // Stop timer 
-        time = endTime - startTime; // Update variable
-        System.out.println("There were "+ i + " URLs attached.\nSearch time: " + Searcher4.time + " milliseconds");	
+       
+        System.out.println("There were "+ i + " URLs attached.");	
     }
 }
 
@@ -152,9 +150,10 @@ public class SearchCmd4 {
             if(name == null || name.length() == 0) {
                 quit = true;
             } else if((currentEntry = hashMap.get(name)) != null) {
-                System.out.println ("The word \"" + name + "\" has been found.");
+                System.out.println ("The word \"" + name + "\" has been found.");               
                 System.out.println("URLs linked to "+ name);
                 Searcher4.printURLs(currentEntry);
+                System.out.println("Search time: "+ hashMap.searchTime/1000 + " miliseconds");
             } else {
                 System.out.println ("The word \"" + name + "\" has NOT been found.\nSearch time: " + Searcher4.time + " milliseconds");
             }

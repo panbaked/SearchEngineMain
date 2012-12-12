@@ -1,7 +1,6 @@
 package SearchEnginePackage;
 
 import java.io.*;
-import java.util.Scanner; // It is only used for get the user input on which file to search
 
 class HTMLList {
     String str;
@@ -104,17 +103,17 @@ class Searcher3 {
     }
     
     public static HTMLList find(HTMLList l, String name) { // Find a word
-        long startTime = System.currentTimeMillis(); // Start timer
+        long startTime = System.nanoTime(); // Start timer
         
         while (l != null) {
             if (l.str.equals(name)) {
-                long endTime = System.currentTimeMillis(); // Stop timer
+                long endTime = System.nanoTime(); // Stop timer
                 time = endTime - startTime; // Update variable
                 return l;
             }
             l = l.next;
         }
-        long endTime = System.currentTimeMillis(); // Stop timer
+        long endTime = System.nanoTime(); // Stop timer
         time = endTime - startTime; // Update variable
         return null;
     }
@@ -130,8 +129,7 @@ class Searcher3 {
     }
     
     public static void printURLs(HTMLList l) {
-        long startTime = System.currentTimeMillis(); // Start timer
-        
+      
     	System.out.println("URLs linked to "+ l.str);
     	URLList urlList = l.urlList;
     	int i = 0;
@@ -142,9 +140,7 @@ class Searcher3 {
             i++;
         }
         
-        long endTime = System.currentTimeMillis(); // Stop timer
-        time = endTime - startTime; // Update variable
-        System.out.println("There were "+ i + " URLs attached.\nSearch time: " + Searcher3.time + " milliseconds");
+        System.out.println("There were "+ i + " URLs attached.");
     }
 }
 
@@ -219,6 +215,7 @@ public class SearchCmd3 {
             } else if ((currentEntry = Searcher3.find(l, name)) != null) {
                 System.out.println("The word \"" + name + "\" has been found.");
                 Searcher3.printURLs(currentEntry);
+                System.out.println("Search time: "+ Searcher3.time/1000 + " miliseconds");
             } else {
                 System.out.println("The word \"" + name + "\" has NOT been found.\nSearch time: " + Searcher3.time + " milliseconds");
             }
