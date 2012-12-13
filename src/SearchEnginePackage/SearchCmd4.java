@@ -22,10 +22,10 @@ class Searcher4 {
     	
         BufferedReader infile = 
                 new BufferedReader(new FileReader(filename)); // Open the file given as argument
-    	
+
     	line = infile.readLine();
     	
-    	while(line != null) {
+        while(line != null) {
             if(isPage(line)) {
                 lastURL = getURL(line);
             } else {
@@ -33,8 +33,7 @@ class Searcher4 {
                     URLList duplicateURLEntry = find(hashMap.get(line), lastURL); //check for this url already exisiting with this name
                     if(duplicateURLEntry == null) { //if it is not a duplicate we update the hashMap
                         hashMap.put(line, new URLList(lastURL, null));
-                    }
-                        
+                    }    
                 } else {
                     hashMap.put(line, new URLList(lastURL, null));
                 }
