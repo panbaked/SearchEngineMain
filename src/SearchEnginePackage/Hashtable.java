@@ -1,12 +1,10 @@
 package SearchEnginePackage;
 
 class Bucket {
-    final String key;
     final int hashKey;
     HTMLList value;
 
-    public Bucket(String s, int k, HTMLList v) {
-        key = s;
+    public Bucket(int k, HTMLList v) {
         hashKey = k;
         value = v;
     }
@@ -24,7 +22,7 @@ public class Hashtable {
         if(i < 0 || i >= mappings.length) {
             return null;
         }
-        if(mappings[i] != null && mappings[i].key.equalsIgnoreCase(s)) {
+        if(mappings[i] != null) {
             HTMLList current = mappings[i].value;
             while(current != null) {
                 if(current.str.equalsIgnoreCase(s)) {
@@ -42,21 +40,32 @@ public class Hashtable {
 
     public void put(String s, URLList value){
         int i = getHash(s);
+        if(s.equals("graduate"))
+            System.out.println("BEEP");
         if(mappings[i] == null) {
             HTMLList newListEntry = new HTMLList(s, null);
             newListEntry.urlList = value;
-            mappings[i] = new Bucket(s, i, newListEntry);
-            
+            mappings[i] = new Bucket(i, newListEntry);
         } else {
             HTMLList current = mappings[i].value;
+            boolean existingInsert = false;
             while(current != null) {
-                if(current.str.equalsIgnoreCase(s)) {
+                if(current.str.equals(s)) {
                     value.next = current.urlList;
                     current.urlList = value;
+                    existingInsert = true;
+                    break;
                 }
                 
                 current = current.next;
             }
+            
+            if(!existingInsert){
+                 HTMLList newListEntry = new HTMLList(s, mappings[i].value);
+                 newListEntry.urlList = value;
+                 mappings[i].value = newListEntry;
+            }
+                
         }	
     }
 

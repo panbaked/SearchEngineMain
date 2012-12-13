@@ -67,12 +67,12 @@ class Searcher4 {
     }
     
     public static URLList find(URLList l, String url) {
-  
-        while(l != null) {
-            if(l.url.equalsIgnoreCase (url)) {
-                return l;
+        URLList current = l;
+        while(current != null) {
+            if(current.url.equalsIgnoreCase (url)) {
+                return current;
             }
-            l = l.next;
+            current = current.next;
         }
         return null;
     }
