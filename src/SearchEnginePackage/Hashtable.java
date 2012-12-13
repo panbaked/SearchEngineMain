@@ -3,9 +3,9 @@ package SearchEnginePackage;
 class Bucket {
     final String key;
     final int hashKey;
-    URLList value;
+    HTMLList value;
 
-    public Bucket(String s, int k, URLList v) {
+    public Bucket(String s, int k, HTMLList v) {
         key = s;
         hashKey = k;
         value = v;
@@ -25,10 +25,17 @@ public class Hashtable {
             return null;
         }
         if(mappings[i] != null && mappings[i].key.equalsIgnoreCase(s)) {
-            long endTime = System.nanoTime(); // Stop timer
-            searchTime = endTime - startTime; // Set timer variable
+            HTMLList current = mappings[i].value;
+            while(current != null) {
+                if(current.str.equalsIgnoreCase(s)) {
+                    long endTime = System.nanoTime(); // Stop timer
+                    searchTime = endTime - startTime; // Set timer variable
             
-            return mappings[i].value;
+                    return current.urlList;
+                }
+                current = current.next;
+            }
+           
         }
         return null;
     }
@@ -36,10 +43,20 @@ public class Hashtable {
     public void put(String s, URLList value){
         int i = getHash(s);
         if(mappings[i] == null) {
-            mappings[i] = new Bucket(s, i, value);
+            HTMLList newListEntry = new HTMLList(s, null);
+            newListEntry.urlList = value;
+            mappings[i] = new Bucket(s, i, newListEntry);
+            
         } else {
-            value.next = mappings[i].value;
-            mappings[i].value = value;
+            HTMLList current = mappings[i].value;
+            while(current != null) {
+                if(current.str.equalsIgnoreCase(s)) {
+                    value.next = current.urlList;
+                    current.urlList = value;
+                }
+                
+                current = current.next;
+            }
         }	
     }
 
