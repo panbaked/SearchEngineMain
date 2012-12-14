@@ -2,9 +2,9 @@ package SearchEnginePackage;
 
 class Bucket {
     final int hashKey;
-    HTMLList value;
+    HTMLList3 value;
 
-    public Bucket(int k, HTMLList v) {
+    public Bucket(int k, HTMLList3 v) {
         hashKey = k;
         value = v;
     }
@@ -23,7 +23,7 @@ public class Hashtable {
             return null;
         }
         if(mappings[i] != null) {
-            HTMLList current = mappings[i].value;
+            HTMLList3 current = mappings[i].value;
             while(current != null) {
                 if(current.str.equalsIgnoreCase(s)) {
                     long endTime = System.nanoTime(); // Stop timer
@@ -43,11 +43,11 @@ public class Hashtable {
         if(s.equals("graduate"))
             System.out.println("BEEP");
         if(mappings[i] == null) {
-            HTMLList newListEntry = new HTMLList(s, null);
+            HTMLList3 newListEntry = new HTMLList3(s, null);
             newListEntry.urlList = value;
             mappings[i] = new Bucket(i, newListEntry);
         } else {
-            HTMLList current = mappings[i].value;
+            HTMLList3 current = mappings[i].value;
             boolean existingInsert = false;
             while(current != null) {
                 if(current.str.equals(s)) {
@@ -61,7 +61,7 @@ public class Hashtable {
             }
             
             if(!existingInsert){
-                 HTMLList newListEntry = new HTMLList(s, mappings[i].value);
+                 HTMLList3 newListEntry = new HTMLList3(s, mappings[i].value);
                  newListEntry.urlList = value;
                  mappings[i].value = newListEntry;
             }

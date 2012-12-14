@@ -84,7 +84,6 @@ public class SearchCmd2 {
         }
     }
 
-
     public static void main(String[] args) throws IOException {
         String name;
         
@@ -123,7 +122,7 @@ public class SearchCmd2 {
  
         HTMLList2 l = Searcher2.readHtmlList(fileFormat.file()); // Read the file and create the linked list
         System.out.println("Datafile loaded in " + Searcher2.time / 1000F + " seconds."); // Print time used to build the list
-       
+        //MyLog.logToFile(Searcher2.time / 1000F); // Log times to file
         
         BufferedReader inuser =
             new BufferedReader (new InputStreamReader (System.in)); // Ask for a word to search

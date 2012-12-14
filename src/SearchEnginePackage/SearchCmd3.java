@@ -2,12 +2,13 @@ package SearchEnginePackage;
 
 import java.io.*;
 
-class HTMLList {
+
+class HTMLList3 {
     String str;
-    HTMLList next;
+    HTMLList3 next;
     URLList urlList;
     
-    HTMLList (String s, HTMLList n) {
+    HTMLList3 (String s, HTMLList3 n) {
         str = s;
         next = n;
     }
@@ -26,7 +27,7 @@ class URLList {
 class Searcher3 { 
     public static long time; // Variable for timer
     
-    public static boolean exists(HTMLList l, String word) {    
+    public static boolean exists(HTMLList3 l, String word) {    
         
         while (l != null) {
             if (l.str.equals(word)) {
@@ -37,17 +38,17 @@ class Searcher3 {
         return false;
     }
 
-    public static HTMLList readHtmlList(String filename) throws IOException {    
+    public static HTMLList3 readHtmlList(String filename) throws IOException {    
         long startTime = System.currentTimeMillis(); // Start timer
         String name;
-        HTMLList start, current, tmp;
+        HTMLList3 start, current, tmp;
         String lastURL = "";
         
         BufferedReader infile = 
                 new BufferedReader(new FileReader(filename)); // Open the file given as argument
 
         name = infile.readLine(); // Read the first line
-        start = new HTMLList (name, null);
+        start = new HTMLList3 (name, null);
         current = start;
         name = infile.readLine(); // Read the next line
         
@@ -60,7 +61,7 @@ class Searcher3 {
                 lastURL = getURL(name);
             } else {
         	if(exists(start, name)) { // Have we found this name before, if so we add the last url to this name
-                    HTMLList existingEntry = find(start, name);
+                    HTMLList3 existingEntry = find(start, name);
                     URLList duplicateURLEntry = find(existingEntry.urlList, lastURL); // Check for this url already exisiting with this name
                     
                     if(duplicateURLEntry == null) {
@@ -68,8 +69,9 @@ class Searcher3 {
                         urlList.next = existingEntry.urlList;
                         existingEntry.urlList = urlList; // Swap our pointer to the new starting element in the list
                     }
+                    
                 } else { // Add a new entry with a new urllist
-                    tmp = new HTMLList(name, null);
+                    tmp = new HTMLList3(name, null);
                     tmp.urlList = new URLList(lastURL, null);
                     current.next = tmp;
                     current = tmp;
@@ -77,6 +79,7 @@ class Searcher3 {
             }
             name = infile.readLine();
         }
+        
         infile.close(); // Close the file  
         long endTime = System.currentTimeMillis(); // Stop timer
         time = endTime - startTime; // Update variable
@@ -102,7 +105,7 @@ class Searcher3 {
     	return pageLine.substring(6);
     }
     
-    public static HTMLList find(HTMLList l, String name) { // Find a word
+    public static HTMLList3 find(HTMLList3 l, String name) { // Find a word
         long startTime = System.nanoTime(); // Start timer
         
         while (l != null) {
@@ -128,7 +131,7 @@ class Searcher3 {
         return null;
     }
     
-    public static void printURLs(HTMLList l) {
+    public static void printURLs(HTMLList3 l) {
       
     	System.out.println("URLs linked to "+ l.str);
     	URLList urlList = l.urlList;
@@ -194,17 +197,17 @@ public class SearchCmd3 {
             fileFormat = SearchCmd2.searchFile.LARGE;
         }
 
-        // Read the file and create the linked list
-        HTMLList l = Searcher3.readHtmlList (fileFormat.file());
-            System.out.println("Datafile loaded in " + Searcher3.time / 1000F + " seconds.");
-
-        // Ask for a word to search
+        HTMLList3 l = Searcher3.readHtmlList (fileFormat.file()); // Read the file and create the linked list
+        System.out.println("Datafile loaded in " + Searcher3.time / 1000F + " seconds.");
+        //MyLog.logToFile(Searcher3.time / 1000F,"Log3.txt"); // Log times to file
+        System.exit(0);
+        
         BufferedReader inuser =
-            new BufferedReader (new InputStreamReader (System.in));
+            new BufferedReader (new InputStreamReader (System.in)); // Ask for a word to search
 
         System.out.println("Hit return to exit.");
         boolean quit = false;
-        HTMLList currentEntry = null;
+        HTMLList3 currentEntry = null;
         
         while (!quit) {
             System.out.print("Search for: ");

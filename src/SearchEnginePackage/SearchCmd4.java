@@ -47,7 +47,7 @@ class Searcher4 {
     	return hashMap;
     }
   
-    public static boolean isPage(String line) {
+    public static boolean isPage(String line) { // check for page
     	if(line.length() < 6) {
             return false;
         }
@@ -59,14 +59,14 @@ class Searcher4 {
         }
     }
     
-    public static String getURL(String pageLine) {
+    public static String getURL(String pageLine) { // get an url
     	if(pageLine.length() < 6) {
             return "";
         }
     	return pageLine.substring(6);
     }
     
-    public static URLList find(URLList l, String url) {
+    public static URLList find(URLList l, String url) { // find an url
         URLList current = l;
         while(current != null) {
             if(current.url.equalsIgnoreCase (url)) {
@@ -77,7 +77,7 @@ class Searcher4 {
         return null;
     }
     
-    public static void printURLs(URLList urlList) {
+    public static void printURLs(URLList urlList) { // print all urls that belongs to that word 
  
     	int i = 0;
         
@@ -133,7 +133,8 @@ public class SearchCmd4 {
         Hashtable hashMap = Searcher4.readHashMap(fileFormat.file()); // Read the file and create the linked list
         
         System.out.println("Datafile loaded in " + Searcher4.time / 1000F + " seconds.");
-
+        //MyLog.logToFile(Searcher4.time / 1000F,"Log4-L.txt"); // Log times to file
+        
         BufferedReader inuser =
             new BufferedReader(new InputStreamReader (System.in)); // Ask for a word to search
 
@@ -153,7 +154,7 @@ public class SearchCmd4 {
                 Searcher4.printURLs(currentEntry);
                 System.out.println("Search time: " + hashMap.searchTime/1000 + " miliseconds\n");
             } else {
-                System.out.println ("The word " + name + " has NOT been found.\nSearch time: " + Searcher4.time + " milliseconds\n");
+                System.out.println ("The word " + name + " has NOT been found.\nSearch time: " + hashMap.searchTime + " milliseconds\n");
             }
         }
     }
