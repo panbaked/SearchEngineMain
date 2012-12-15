@@ -73,12 +73,16 @@ public class SearchCmd1 {
             System.out.println("Usage: java SearchCmd <datafile>");
             System.exit(1);
         }
-
-        HTMLlist l = Searcher1.readHtmlList (file); // Read the file and create the linked list
-
+        
+        // Read the file and create the linked list
+        HTMLlist l = Searcher1.readHtmlList (file); 
+        
+        // Ask for a word to search
         BufferedReader inuser = 
-            new BufferedReader (new InputStreamReader (System.in)); // Ask for a word to search
-        System.out.println("Datafile loaded in " + Searcher1.time / 1000F + " seconds."); // Print time used to build the list
+                new BufferedReader (new InputStreamReader (System.in)); 
+        
+        // Print time used to build the list
+        System.out.println("Datafile loaded in " + Searcher1.time / 1000F + " seconds."); 
         //MyLog.logToFile(Searcher1.time / 1000F); // Log times to file
         
         System.out.println ("Hit return to exit.");
@@ -91,7 +95,7 @@ public class SearchCmd1 {
             } else if (Searcher1.exists (l, name)) {
                 System.out.println ("The word " + name + " has been found.");
             } else {
-                System.out.println ("The word \"" + name + " has NOT been found.");
+                System.out.println ("The word " + name + " has NOT been found.");
             }
             System.out.println("Search time: " + Searcher1.time + " miliseconds");
         }

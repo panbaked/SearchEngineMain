@@ -20,13 +20,13 @@ class Searcher2 {
     
     public static int exists(HTMLList2 l, String word) { 
         long startTime = System.currentTimeMillis(); // Start timer
-       
         int foundWords = 0;
         String lastURL = ""; // Variable to hold lastest url 
        
         while (l != null) {
+            // Remove *PAGE: and update url variable
             if(l.str.charAt(0) == '*') {
-                lastURL = l.str.substring(6); //remove *PAGE: and update url variable
+                lastURL = l.str.substring(6); 
             } 
             
             if (l.str.equals (word)) {
@@ -35,7 +35,6 @@ class Searcher2 {
             }
             l = l.next;
         }
-        
         long endTime = System.currentTimeMillis(); // Stop timer
         time = endTime - startTime; // Set timer variable
         return foundWords; // Return words
@@ -45,8 +44,9 @@ class Searcher2 {
         long startTime = System.currentTimeMillis(); // Start timer
         String name;
         HTMLList2 start, current, tmp;
-
-        BufferedReader infile = new BufferedReader(new FileReader(filename)); // Open the file given as argument
+        
+        // Open the file given as argument
+        BufferedReader infile = new BufferedReader(new FileReader(filename)); 
 
         name = infile.readLine(); //Read the first line
         start = new HTMLList2(name, null);
@@ -87,18 +87,25 @@ public class SearchCmd2 {
     public static void main(String[] args) throws IOException {
         String name;
         
+        //prompt the user which file to use
         BufferedReader readIn =
-            new BufferedReader (new InputStreamReader (System.in)); //prompt the user which file to use
+            new BufferedReader (new InputStreamReader (System.in)); 
 
         String file = null;
 
         while (file == null) {
             try {
-                System.out.println("Please type which file you use for searching e.g. : small, medium, large");
+                System.out.print("Please type which file you use for searching ");
+                System.out.println(" e.g. : small, medium, large");
                 System.out.print("Type: ");
                 file = readIn.readLine().toUpperCase();
-                if (!file.equals(searchFile.SMALL.toString()) & !file.equals(searchFile.MEDIUM.toString()) & !file.equals(searchFile.LARGE.toString())) {
-                    throw new Exception("Input must be: " + searchFile.SMALL.toString() + " / " + searchFile.MEDIUM.toString() + " / " + searchFile.LARGE.toString());
+                if (!file.equals(searchFile.SMALL.toString()) 
+                        & !file.equals(searchFile.MEDIUM.toString()) 
+                        & !file.equals(searchFile.LARGE.toString())) {
+                    throw new Exception("Input must be: " 
+                            + searchFile.SMALL.toString() 
+                            + " / " + searchFile.MEDIUM.toString() 
+                            + " / " + searchFile.LARGE.toString());
                 }
             } catch (Exception ex) {
                 file = null;
@@ -119,13 +126,16 @@ public class SearchCmd2 {
         if (file.equals(searchFile.LARGE.toString())) {
             fileFormat = searchFile.LARGE;
         }
- 
-        HTMLList2 l = Searcher2.readHtmlList(fileFormat.file()); // Read the file and create the linked list
-        System.out.println("Datafile loaded in " + Searcher2.time / 1000F + " seconds."); // Print time used to build the list
+        
+        // Read the file and create the linked list
+        HTMLList2 l = Searcher2.readHtmlList(fileFormat.file()); 
+        // Print time used to build the list
+        System.out.println("Datafile loaded in " + Searcher2.time / 1000F + " seconds."); 
         //MyLog.logToFile(Searcher2.time / 1000F); // Log times to file
         
+        // Ask for a word to search
         BufferedReader inuser =
-            new BufferedReader (new InputStreamReader (System.in)); // Ask for a word to search
+            new BufferedReader (new InputStreamReader (System.in)); 
 
         System.out.println ("Hit return to exit.");
         boolean quit = false;
@@ -137,7 +147,8 @@ public class SearchCmd2 {
                 quit = true;
             } else {
             	int instancesFound = Searcher2.exists(l, name);
-            	System.out.println("There were " + instancesFound + " instances found.\nSearch time: " + Searcher2.time + " miliseconds");
+            	System.out.println("There were " + instancesFound + " instances found."
+                        + "\nSearch time: " + Searcher2.time + " miliseconds");
             }
         }
     }

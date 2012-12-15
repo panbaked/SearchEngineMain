@@ -9,7 +9,7 @@ import java.util.Calendar;
  *
  * @author rasmus
  */
-public class MyLog {
+public class MyLog { // Used to log different data to a file for further analysis
     
     public static void logToFile(long s, String filename) throws IOException {
         Writer output = null;

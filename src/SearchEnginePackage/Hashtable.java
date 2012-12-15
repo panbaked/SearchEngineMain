@@ -22,6 +22,7 @@ public class Hashtable {
         if(i < 0 || i >= mappings.length) {
             return null;
         }
+        
         if(mappings[i] != null) {
             HTMLList3 current = mappings[i].value;
             while(current != null) {
@@ -33,15 +34,17 @@ public class Hashtable {
                 }
                 current = current.next;
             }
-           
         }
         return null;
     }
 
     public void put(String s, URLList value){
         int i = getHash(s);
-        if(s.equals("graduate"))
+        
+        if(s.equals("graduate")) {
             System.out.println("BEEP");
+        }
+        
         if(mappings[i] == null) {
             HTMLList3 newListEntry = new HTMLList3(s, null);
             newListEntry.urlList = value;
@@ -55,8 +58,7 @@ public class Hashtable {
                     current.urlList = value;
                     existingInsert = true;
                     break;
-                }
-                
+                }        
                 current = current.next;
             }
             
@@ -65,11 +67,11 @@ public class Hashtable {
                  newListEntry.urlList = value;
                  mappings[i].value = newListEntry;
             }
-                
         }	
     }
 
     public int getHash(String s) {
-        return Math.abs(s.hashCode() % defaultCapacity); // Using modulo to find the hash key
+        // Using modulo to find the hash key
+        return Math.abs(s.hashCode() % defaultCapacity); 
     }
 }

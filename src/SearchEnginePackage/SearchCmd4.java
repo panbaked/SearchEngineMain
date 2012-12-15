@@ -20,8 +20,9 @@ class Searcher4 {
     	String line, lastURL = "";
     	Hashtable hashMap = new Hashtable();
     	
+        // Open the file given as argument
         BufferedReader infile = 
-                new BufferedReader(new FileReader(filename)); // Open the file given as argument
+                new BufferedReader(new FileReader(filename)); 
 
     	line = infile.readLine();
     	
@@ -30,8 +31,10 @@ class Searcher4 {
                 lastURL = getURL(line);
             } else {
                 if(exists(hashMap, line)) {
-                    URLList duplicateURLEntry = find(hashMap.get(line), lastURL); //check for this url already exisiting with this name
-                    if(duplicateURLEntry == null) { //if it is not a duplicate we update the hashMap
+                    //check for this url already exisiting with this name
+                    URLList duplicateURLEntry = find(hashMap.get(line), lastURL); 
+                    //if it is not a duplicate we update the hashMap
+                    if(duplicateURLEntry == null) { 
                         hashMap.put(line, new URLList(lastURL, null));
                     }    
                 } else {
@@ -77,8 +80,8 @@ class Searcher4 {
         return null;
     }
     
-    public static void printURLs(URLList urlList) { // print all urls that belongs to that word 
- 
+    // print all urls that belongs to that word 
+    public static void printURLs(URLList urlList) { 
     	int i = 0;
         
         while(urlList != null) {
@@ -87,7 +90,7 @@ class Searcher4 {
             i++;
         }
        
-        System.out.println("There were "+ i + " URLs attached.");	
+        System.out.println("There were " + i + " URLs attached.");	
     }
 }
 
@@ -95,20 +98,28 @@ public class SearchCmd4 {
 
     public static void main(String[] args) throws IOException {
         String name;
-      
+        
+        // prompt the user which file to use
         BufferedReader readIn =
-            new BufferedReader (new InputStreamReader (System.in)); // prompt the user which file to use
+            new BufferedReader (new InputStreamReader (System.in)); 
       
         String file = null;
 
         while(file == null) {
             try {
-                System.out.println("Please type which file you use for searching e.g. : small, medium, large");
+                System.out.print("Please type which file you use for searching"); 
+                System.out.println("e.g. : small, medium, large");
                 System.out.print("Type: ");
                 file = readIn.readLine().toUpperCase();
                 
-                if(!file.equals(SearchCmd2.searchFile.SMALL.toString()) & !file.equals(SearchCmd2.searchFile.MEDIUM.toString()) & !file.equals(SearchCmd2.searchFile.LARGE.toString())) {
-                    throw new Exception("Input must be: " + SearchCmd2.searchFile.SMALL.toString() + " / " + SearchCmd2.searchFile.MEDIUM.toString() + " / " + SearchCmd2.searchFile.LARGE.toString());
+                if(!file.equals(SearchCmd2.searchFile.SMALL.toString()) 
+                   & !file.equals(SearchCmd2.searchFile.MEDIUM.toString()) 
+                   & !file.equals(SearchCmd2.searchFile.LARGE.toString())) {
+                    
+                    throw new Exception("Input must be: " 
+                            + SearchCmd2.searchFile.SMALL.toString() 
+                            + " / " + SearchCmd2.searchFile.MEDIUM.toString() 
+                            + " / " + SearchCmd2.searchFile.LARGE.toString());
                 }
             } catch(Exception ex) {
                 file = null;
@@ -129,14 +140,16 @@ public class SearchCmd4 {
         if(file.equals(SearchCmd2.searchFile.LARGE.toString())) {
                 fileFormat = SearchCmd2.searchFile.LARGE;
         }
-
-        Hashtable hashMap = Searcher4.readHashMap(fileFormat.file()); // Read the file and create the linked list
+        
+        // Read the file and create the linked list
+        Hashtable hashMap = Searcher4.readHashMap(fileFormat.file()); 
         
         System.out.println("Datafile loaded in " + Searcher4.time / 1000F + " seconds.");
         //MyLog.logToFile(Searcher4.time / 1000F,"Log4-L.txt"); // Log times to file
         
+        // Ask for a word to search
         BufferedReader inuser =
-            new BufferedReader(new InputStreamReader (System.in)); // Ask for a word to search
+            new BufferedReader(new InputStreamReader (System.in)); 
 
         System.out.println("Hit return to exit.");
         boolean quit = false;
@@ -152,9 +165,11 @@ public class SearchCmd4 {
                 System.out.println ("The word " + name + " has been found.");               
                 System.out.println("URLs linked to " + name);
                 Searcher4.printURLs(currentEntry);
-                System.out.println("Search time: " + hashMap.searchTime/1000 + " miliseconds\n");
+                System.out.println("Search time: " + hashMap.searchTime/1000 
+                        + " miliseconds\n");
             } else {
-                System.out.println ("The word " + name + " has NOT been found.\nSearch time: " + hashMap.searchTime + " milliseconds\n");
+                System.out.println ("The word " + name + " has NOT been found."
+                        + "\nSearch time: " + hashMap.searchTime + " milliseconds\n");
             }
         }
     }

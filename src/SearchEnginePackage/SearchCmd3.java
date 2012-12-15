@@ -44,8 +44,9 @@ class Searcher3 {
         HTMLList3 start, current, tmp;
         String lastURL = "";
         
+        // Open the file given as argument
         BufferedReader infile = 
-                new BufferedReader(new FileReader(filename)); // Open the file given as argument
+                new BufferedReader(new FileReader(filename)); 
 
         name = infile.readLine(); // Read the first line
         start = new HTMLList3 (name, null);
@@ -60,14 +61,17 @@ class Searcher3 {
             if(isPage(name)) {
                 lastURL = getURL(name);
             } else {
-        	if(exists(start, name)) { // Have we found this name before, if so we add the last url to this name
+                // Have we found this name before, if so we add the last url to this name
+        	if(exists(start, name)) { 
                     HTMLList3 existingEntry = find(start, name);
-                    URLList duplicateURLEntry = find(existingEntry.urlList, lastURL); // Check for this url already exisiting with this name
+                    // Check for this url already exisiting with this name
+                    URLList duplicateURLEntry = find(existingEntry.urlList, lastURL); 
                     
                     if(duplicateURLEntry == null) {
                         URLList urlList = new URLList(lastURL, null);
                         urlList.next = existingEntry.urlList;
-                        existingEntry.urlList = urlList; // Swap our pointer to the new starting element in the list
+                        // Swap our pointer to the new starting element in the list
+                        existingEntry.urlList = urlList; 
                     }
                     
                 } else { // Add a new entry with a new urllist
@@ -132,8 +136,7 @@ class Searcher3 {
     }
     
     public static void printURLs(HTMLList3 l) {
-      
-    	System.out.println("URLs linked to "+ l.str);
+    	System.out.println("URLs linked to " + l.str);
     	URLList urlList = l.urlList;
     	int i = 0;
         
@@ -143,7 +146,7 @@ class Searcher3 {
             i++;
         }
         
-        System.out.println("There were "+ i + " URLs attached.");
+        System.out.println("There were " + i + " URLs attached.");
     }
 }
 
@@ -167,18 +170,26 @@ public class SearchCmd3 {
     public static void main (String[] args) throws IOException {
         String name;
         
+        //prompt the user which file to use
         BufferedReader readIn =
-            new BufferedReader (new InputStreamReader (System.in)); //prompt the user which file to use
+            new BufferedReader (new InputStreamReader (System.in)); 
         
         String file = null;
 
         while (file == null) {
             try {
-                System.out.println("Please type which file you use for searching e.g. : small, medium, large");
+                System.out.print("Please type which file you use for searching "); 
+                System.out.println("e.g. : small, medium, large");
                 System.out.print("Type: ");
                 file = readIn.readLine().toUpperCase();
-                if (!file.equals(SearchCmd2.searchFile.SMALL.toString()) & !file.equals(SearchCmd2.searchFile.MEDIUM.toString()) & !file.equals(SearchCmd2.searchFile.LARGE.toString())) {
-                    throw new Exception("Input must be: " + SearchCmd2.searchFile.SMALL.toString() + " / " + SearchCmd2.searchFile.MEDIUM.toString() + " / " + SearchCmd2.searchFile.LARGE.toString());
+                if (!file.equals(SearchCmd2.searchFile.SMALL.toString()) 
+                        & !file.equals(SearchCmd2.searchFile.MEDIUM.toString()) 
+                        & !file.equals(SearchCmd2.searchFile.LARGE.toString())) {
+                    
+                    throw new Exception("Input must be: " 
+                            + SearchCmd2.searchFile.SMALL.toString() 
+                            + " / " + SearchCmd2.searchFile.MEDIUM.toString() 
+                            + " / " + SearchCmd2.searchFile.LARGE.toString());
                 }
             } catch (Exception ex) {
                 file = null;
@@ -196,14 +207,16 @@ public class SearchCmd3 {
         if (file.equals(SearchCmd2.searchFile.LARGE.toString())) {
             fileFormat = SearchCmd2.searchFile.LARGE;
         }
-
-        HTMLList3 l = Searcher3.readHtmlList (fileFormat.file()); // Read the file and create the linked list
+        
+        // Read the file and create the linked list
+        HTMLList3 l = Searcher3.readHtmlList (fileFormat.file()); 
         System.out.println("Datafile loaded in " + Searcher3.time / 1000F + " seconds.");
         //MyLog.logToFile(Searcher3.time / 1000F,"Log3.txt"); // Log times to file
         System.exit(0);
         
+        // Ask for a word to search
         BufferedReader inuser =
-            new BufferedReader (new InputStreamReader (System.in)); // Ask for a word to search
+            new BufferedReader (new InputStreamReader (System.in)); 
 
         System.out.println("Hit return to exit.");
         boolean quit = false;
@@ -216,11 +229,13 @@ public class SearchCmd3 {
             if (name == null || name.length() == 0) {
                 quit = true;
             } else if ((currentEntry = Searcher3.find(l, name)) != null) {
-                System.out.println("The word \"" + name + "\" has been found.");
+                System.out.println("The word " + name + " has been found.");
                 Searcher3.printURLs(currentEntry);
-                System.out.println("Search time: "+ Searcher3.time/1000 + " miliseconds");
+                System.out.println("Search time: " + Searcher3.time/1000 + " miliseconds");
             } else {
-                System.out.println("The word \"" + name + "\" has NOT been found.\nSearch time: " + Searcher3.time + " milliseconds");
+                System.out.println("The word " + name 
+                        + " has NOT been found.\nSearch time: " 
+                        + Searcher3.time + " milliseconds");
             }
         }
 
